@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+<div class="uk-container uk-flex uk-flex-center">
+  <div class="uk-width-1-1@s uk-width-large@m">
+    <h1 class="uk-text-large">新規投稿</h1>
+
+    <form method="post" novalidate="novalidate">
+      {% csrf_token %}
+
+      {% include 'includes/non_field_errors.html' with errors=form.non_field_errors %}
+
+      <div class="uk-margin">
+        {% include 'includes/field.html' with field=form.title %}
+      </div>
+
+      <div class="uk-margin">
+        {% include 'includes/field.html' with field=form.description %}
+      </div>
+
+      {% if form.attributes_rent %}
+      <div class="uk-margin">
+        {% include 'includes/field.html' with field=form.attributes_rent %}
+      </div>
+      {% endif %}
+
+      <div class="form-row">
+        {{ form.location_autocomplete }}
+        {{ form.location.as_hidden }}
+      </div>
+
+      <div class="dz"></div>
+
+      <div class="uk-margin">
+        <button type='submit' class="uk-button uk-button-primary uk-width-1-1">新規投稿</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block body_js %}
+<script>
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        // Does this cookie string begin with the name we want?
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+  const csrftoken = getCookie('csrftoken');
+  //X-CSRFToken
+
+  $(function () {
+    $(".dz").dropzone({
+      url: "/"
+    });
+  })
+</script>
+{% comment %}
+<script>
+  $(function () {
+    $('#id_location_autocomplete').autocomplete({
+      source: function (request, response) {
+        $.ajax({
+          url: '/api/locations/autocomplete/',
+          dataType: 'json',
+          data: {
+            term: request.term
+          },
+          success: function (data) {
+            response(data);
+          }
+        });
+      },
+      minLength: 2,
+      select: function (event, ui) {
+        $('#id_location').val(ui.item.id);
+      }
+    })
+  });
+</script>
+{% endcomment %}
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'email/base_message.txt' %}
+
+{% block content %}{% autoescape off %}「{{ item.title }}」の投稿が完了したことをお知らせいたします。
+
+投稿内容は以下のリンクからご確認いただけます。
+{{ protocol }}://{{ domain }}/classifieds/p/{{ item.id }}
+
+投稿の編集および削除は「投稿の管理」から行ってください。
+{{ protocol }}://{{ domain }}/account/manage-items/
+
+※投稿を編集・更新することで再度リスト上部に表示されます。
+
+※このメールにお心当たりの無い方は、お手数ですが破棄して頂きますようお願い致します。
+{% endautoescape %}{% endblock %}

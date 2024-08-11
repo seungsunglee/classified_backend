@@ -1,0 +1,38 @@
+<ul class="uk-nav uk-nav-default uk-text-default">
+  <li class="{% if request.path == '/account/manage-items/' %}uk-active{% endif %}">
+    <a href="{% url 'accounts:manage_items' %}">
+      <span class="uk-margin-small-right" uk-icon="icon: list"></span>
+      投稿の管理
+    </a>
+  </li>
+  <li class="{% if request.path == '/account/bookmarks/' %}uk-active{% endif %}">
+    <a href="{% url 'accounts:bookmarks' %}">
+      <span class="uk-margin-small-right" uk-icon="icon: heart"></span>
+      ブックマーク
+    </a>
+  </li>
+  <li class="{% if request.path == '/account/direct/' %}uk-active{% endif %}">
+    <a href="{% url 'accounts:direct_index' %}">
+      <span class="uk-margin-small-right" uk-icon="icon: mail"></span>
+      メッセージ
+    </a>
+  </li>
+  <li class="{% if request.path == '/account/payment-history/' %}uk-active{% endif %}">
+    <a href="{% url 'accounts:payment_history' %}">
+      <span class="uk-margin-small-right" uk-icon="icon: credit-card"></span>
+      お支払い履歴
+    </a>
+  </li>
+  <li class="{% if request.path == '/account/settings/' %}uk-active{% endif %}">
+    <a href="{% url 'accounts:settings' %}">
+      <span class="uk-margin-small-right" uk-icon="icon: cog"></span>
+      アカウント設定
+    </a>
+  </li>
+  <li class="{% if request.path == '/account/security/' %}uk-active{% endif %}">
+    <a href="{% url 'accounts:security' %}">
+      <span class="uk-margin-small-right" uk-icon="icon: lock"></span>
+      セキュリティ
+    </a>
+  </li>
+</ul>

@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="uk-container">
+  <div uk-grid>
+    <div class="uk-width-1-4@m uk-visible@l">
+      {% include 'accounts/includes/menu.html' %}
+    </div>
+    <div class="uk-width-1-1@m uk-width-3-4@l">
+      {% for item in items.object_list %}
+      <a href="{{ item.get_absolute_url }}" class="uk-card uk-card-default uk-flex uk-margin uk-link-toggle">
+        <img src="{{ item.image_set.all.0.file.url }}" alt="" style="width: 200px; object-fit: cover;">
+        <div class="uk-padding-small uk-width-1-1">
+          <div class="uk-text-default"><span class="uk-link-heading">{{ item.title }}</span></div>
+          <div class="uk-text-meta">
+            <span>{{ item.location.name }}, {{ item.location.state_code }}</span>
+            <span>·</span>
+            <span>{{ item.category.name }}</span>
+          </div>
+        </div>
+      </a>
+      {% endfor %}
+
+      <ul class="uk-pagination uk-flex-center">
+        {% if items.has_previous %}
+        <li>
+          <a href="?{{ items.previous_page_number.querystring }}">
+            <span uk-pagination-previous></span>
+          </a>
+        </li>
+        {% else %}
+        <li class="uk-disabled">
+          <a href="#">
+            <span uk-pagination-previous></span>
+          </a>
+        </li>
+        {% endif %}
+        {% for page in items.pages %}
+        {% if page %}
+        {% ifequal page items.number %}
+        <li class="uk-active active">
+          <span>{{ page }}</span>
+        </li>
+        {% else %}
+        <li>
+          <a href="?{{ page.querystring }}">{{ page }}</a>
+        </li>
+        {% endifequal %}
+        {% else %}
+        <li class="uk-disabled"><span>...</span></li>
+        {% endif %}
+        {% endfor %}
+        {% if items.has_next %}
+        <li>
+          <a href="?{{ items.next_page_number.querystring }}">
+            <span uk-pagination-next></span>
+          </a>
+        </li>
+        {% else %}
+        <li class="uk-disabled">
+          <a href="#">
+            <span uk-pagination-next></span>
+          </a>
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</div>
+
+{% comment %}
+<div>
+  <div class="container-fluid mt-2">
+    <div class="row">
+      <div class="col-3 d-none d-lg-block">
+        {% include 'accounts/includes/menu.html' %}
+      </div>
+      <div class="col-12 col-lg-9">
+        <div class="accounts-item-list">
+          {% for item in items.object_list %}
+          <div class="manage-item-card">
+            <a href="{{ item.get_absolute_url }}">
+              <img src="{{ item.image_set.all.0.file.url }}" class="item-h-card-img" />
+            </a>
+            <div class="item-h-card-content">
+              <div class="d-flex w-100 mb-1" style="padding-right: 56px;">
+                <a href="{{ item.get_absolute_url }}">{{ item.title }}</a>
+              </div>
+              <div class="d-flex flex-row">
+                <div class="d-flex flex-row align-items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" height="24" width="24" class="icon icon-sm">
+                    <path d="M12 21 10.55 19.7Q6.625 16.2 4.312 13.612Q2 11.025 2 8.15Q2 5.8 3.575 4.225Q5.15 2.65 7.5 2.65Q8.825 2.65 10 3.212Q11.175 3.775 12 4.75Q12.825 3.775 14 3.212Q15.175 2.65 16.5 2.65Q18.85 2.65 20.425 4.225Q22 5.8 22 8.15Q22 11.025 19.688 13.612Q17.375 16.2 13.45 19.7ZM12 11.475Q12 11.475 12 11.475Q12 11.475 12 11.475Q12 11.475 12 11.475Q12 11.475 12 11.475Q12 11.475 12 11.475Q12 11.475 12 11.475Q12 11.475 12 11.475Q12 11.475 12 11.475Q12 11.475 12 11.475Q12 11.475 12 11.475Q12 11.475 12 11.475Q12 11.475 12 11.475ZM12 18.3Q15.575 15.05 17.788 12.7Q20 10.35 20 8.15Q20 6.65 19 5.65Q18 4.65 16.5 4.65Q15.325 4.65 14.325 5.312Q13.325 5.975 12.95 7H11.05Q10.675 5.975 9.675 5.312Q8.675 4.65 7.5 4.65Q6 4.65 5 5.65Q4 6.65 4 8.15Q4 10.35 6.213 12.7Q8.425 15.05 12 18.3Z" />
+                  </svg>
+                  <div class="ms-1">0</div>
+                </div>
+                <div class="d-flex flex-row align-items-center" style="margin-left: 12px;">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" height="24" width="24" class="icon icon-sm">
+                    <path d="M12 16Q13.875 16 15.188 14.688Q16.5 13.375 16.5 11.5Q16.5 9.625 15.188 8.312Q13.875 7 12 7Q10.125 7 8.812 8.312Q7.5 9.625 7.5 11.5Q7.5 13.375 8.812 14.688Q10.125 16 12 16ZM12 14.2Q10.875 14.2 10.088 13.412Q9.3 12.625 9.3 11.5Q9.3 10.375 10.088 9.587Q10.875 8.8 12 8.8Q13.125 8.8 13.913 9.587Q14.7 10.375 14.7 11.5Q14.7 12.625 13.913 13.412Q13.125 14.2 12 14.2ZM12 19Q8.35 19 5.35 16.962Q2.35 14.925 1 11.5Q2.35 8.075 5.35 6.037Q8.35 4 12 4Q15.65 4 18.65 6.037Q21.65 8.075 23 11.5Q21.65 14.925 18.65 16.962Q15.65 19 12 19ZM12 11.5Q12 11.5 12 11.5Q12 11.5 12 11.5Q12 11.5 12 11.5Q12 11.5 12 11.5Q12 11.5 12 11.5Q12 11.5 12 11.5Q12 11.5 12 11.5Q12 11.5 12 11.5ZM12 17Q14.825 17 17.188 15.512Q19.55 14.025 20.8 11.5Q19.55 8.975 17.188 7.487Q14.825 6 12 6Q9.175 6 6.812 7.487Q4.45 8.975 3.2 11.5Q4.45 14.025 6.812 15.512Q9.175 17 12 17Z" /></svg>
+                  <div class="ms-1">174</div>
+                </div>
+              </div>
+            </div>
+            <div class="dropdown">
+              <a href="#" id="dropdownUser1" class="ms-1 d-inline-flex align-items-center justify-content-center text-center p-2" data-bs-toggle="dropdown" aria-expanded="false">
+                <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" height="24" width="24" class="icon">
+                  <path d="M12 20Q11.175 20 10.588 19.413Q10 18.825 10 18Q10 17.175 10.588 16.587Q11.175 16 12 16Q12.825 16 13.413 16.587Q14 17.175 14 18Q14 18.825 13.413 19.413Q12.825 20 12 20ZM12 14Q11.175 14 10.588 13.412Q10 12.825 10 12Q10 11.175 10.588 10.587Q11.175 10 12 10Q12.825 10 13.413 10.587Q14 11.175 14 12Q14 12.825 13.413 13.412Q12.825 14 12 14ZM12 8Q11.175 8 10.588 7.412Q10 6.825 10 6Q10 5.175 10.588 4.588Q11.175 4 12 4Q12.825 4 13.413 4.588Q14 5.175 14 6Q14 6.825 13.413 7.412Q12.825 8 12 8Z" /></svg>
+              </a>
+              <ul aria-labelledby="dropdownUser1" class="dropdown-menu dropdown-menu-end">
+                <li>
+                  <a class="dropdown-item" href="#">
+                    <div class="dropdown-item-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" height="24" width="24" class="icon">
+                        <path d="M15.975 5 11.975 9 10.575 7.6 12.175 6H12Q9.5 6 7.75 7.762Q6 9.525 6 12.05Q6 12.7 6.15 13.325Q6.3 13.95 6.6 14.55L5.1 16.05Q4.55 15.1 4.275 14.1Q4 13.1 4 12.05Q4 8.7 6.325 6.35Q8.65 4 12 4H12.175L10.575 2.4L11.975 1ZM8.025 19 12.025 15 13.425 16.4 11.825 18H12Q14.5 18 16.25 16.238Q18 14.475 18 11.95Q18 11.3 17.85 10.675Q17.7 10.05 17.4 9.45L18.9 7.95Q19.45 8.9 19.725 9.9Q20 10.9 20 11.95Q20 15.3 17.675 17.65Q15.35 20 12 20H11.825L13.425 21.6L12.025 23Z" /></svg>
+                    </div>
+                    <div>更新する</div>
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item d-flex align-items-center" href="{% url 'classifieds:edit' item.id %}">
+                    <div class="dropdown-item-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" height="24" width="24" class="icon">
+                        <path d="M5 19H6.4L16.45 8.975L15.75 8.25L15.025 7.55L5 17.6ZM3 21V16.75L16.45 3.325Q17.025 2.75 17.863 2.75Q18.7 2.75 19.275 3.325L20.675 4.75Q21.25 5.325 21.25 6.15Q21.25 6.975 20.675 7.55L7.25 21ZM19.25 6.15 17.85 4.75ZM16.45 8.975 15.75 8.25 15.025 7.55 16.45 8.975Z" /></svg>
+                    </div>
+                    <div>編集する</div>
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item d-flex align-items-center" href="{% url 'accounts:settings' %}">
+                    <div class="dropdown-item-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" height="24" width="24" class="icon">
+                        <path d="M8 19H16Q16 19 16 19Q16 19 16 19V9H8V19Q8 19 8 19Q8 19 8 19ZM5 6V4H8.5L9.5 3H14.5L15.5 4H19V6ZM8 21Q7.175 21 6.588 20.413Q6 19.825 6 19V7H18V19Q18 19.825 17.413 20.413Q16.825 21 16 21ZM8 19H16Q16 19 16 19Q16 19 16 19H8Q8 19 8 19Q8 19 8 19Z" /></svg>
+                    </div>
+                    <div>削除する</div>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          {% endfor %}
+
+          <ul class="pagination justify-content-center mt-4">
+            {% if items.has_previous %}
+            <li class="page-item">
+              <a href="?{{ items.previous_page_number.querystring }}" class="page-link">
+                <span>&laquo;</span></a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+              <a class="page-link">
+                <span>&laquo;</span>
+              </a>
+            </li>
+            {% endif %}
+            {% for page in items.pages %}
+            {% if page %}
+            {% ifequal page items.number %}
+            <li class="page-item active">
+              <a class="page-link">{{ page }}</a>
+
+              <span></span>
+            </li>
+            {% else %}
+            <li class="page-item">
+              <a href="?{{ page.querystring }}" class="page-link">{{ page }}</a>
+            </li>
+            {% endifequal %}
+            {% else %}...{% endif %}
+            {% endfor %}
+            {% if items.has_next %}
+            <li class="page-item">
+              <a href="?{{ items.next_page_number.querystring }}" class="page-link">
+                <span>&raquo;</span>
+              </a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+              <a class="page-link">
+                <span>&raquo;</span>
+              </a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endcomment %}
+{% endblock %}

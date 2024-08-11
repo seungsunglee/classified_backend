@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+  <div>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-3 d-none d-lg-block">
+          {% include 'accounts/includes/menu.html' %}
+        </div>
+        <div class="col-12 col-lg-9">
+          <form class="container-fluid-accounts mt-3" method="post" novalidate="novalidate">
+            {% csrf_token %}
+
+            <h1 class="h4 fw-bold mb-4">アカウント設定</h1>
+
+            {% if form.non_field_errors %}
+              {% for error in form.non_field_errors %}
+                <div class="alert alert-danger">
+                  {{ error }}
+                </div>
+              {% endfor %}
+            {% endif %}
+            <div class="form-row">
+              {{ form.username|as_crispy_field }}
+            </div>
+            <div class="form-row">
+              {{ form.email|as_crispy_field }}
+            </div>
+            <div class="form-row">
+              {{ form.introduction|as_crispy_field }}
+            </div>
+            <div class="form-row">
+              {{ form.website|as_crispy_field }}
+            </div>
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary">会員登録</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

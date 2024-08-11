@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+  <div>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-3 d-none d-lg-block">
+          {% include 'accounts/includes/menu.html' %}
+        </div>
+        <div class="col-12 col-lg-9">
+          <form class="container-fluid-accounts mt-3" method="post" novalidate="novalidate">
+            {% csrf_token %}
+
+            <h1 class="h4 fw-bold mb-4">セキュリティ</h1>
+            <h2 class="h5 fw-bold mb-3">パスワードを変更</h2>
+
+            {% if form.non_field_errors %}
+              {% for error in form.non_field_errors %}
+                <div class="alert alert-danger">
+                  {{ error }}
+                </div>
+              {% endfor %}
+            {% endif %}
+            <div class="form-row">
+              {{ form.old_password|as_crispy_field }}
+            </div>
+            <div class="form-row">
+              {{ form.new_password1|as_crispy_field }}
+            </div>
+            <div class="form-row">
+              {{ form.new_password2|as_crispy_field }}
+            </div>
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary">会員登録</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

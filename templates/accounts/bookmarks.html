@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="uk-container">
+  <div uk-grid>
+    <div class="uk-width-1-4@m uk-visible@l">
+      {% include 'accounts/includes/menu.html' %}
+    </div>
+    <div class="uk-width-1-1@m uk-width-3-4@l">
+      {% for bookmark in bookmarks.object_list %}
+      <a href="{{ bookmark.item.get_absolute_url }}" class="uk-card uk-card-default uk-flex uk-margin uk-link-toggle">
+        <img src="{{ bookmark.item.image_set.all.0.file.url }}" alt="" style="width: 200px; object-fit: cover;">
+        <div class="uk-padding-small uk-width-1-1">
+          <div class="uk-text-default"><span class="uk-link-heading">{{ bookmark.item.title }}</span></div>
+          <div class="uk-text-meta">
+            <span>{{ bookmark.item.location.name }}, {{ bookmark.item.location.state_code }}</span>
+            <span>·</span>
+            <span>{{ bookmark.item.category.name }}</span>
+          </div>
+        </div>
+      </a>
+      {% endfor %}
+
+      <ul class="uk-pagination uk-flex-center">
+        {% if bookmarks.has_previous %}
+        <li>
+          <a href="?{{ bookmarks.previous_page_number.querystring }}">
+            <span uk-pagination-previous></span>
+          </a>
+        </li>
+        {% else %}
+        <li class="uk-disabled">
+          <a href="#">
+            <span uk-pagination-previous></span>
+          </a>
+        </li>
+        {% endif %}
+        {% for page in bookmarks.pages %}
+        {% if page %}
+        {% ifequal page bookmarks.number %}
+        <li class="uk-active active">
+          <span>{{ page }}</span>
+        </li>
+        {% else %}
+        <li>
+          <a href="?{{ page.querystring }}">{{ page }}</a>
+        </li>
+        {% endifequal %}
+        {% else %}
+        <li class="uk-disabled"><span>...</span></li>
+        {% endif %}
+        {% endfor %}
+        {% if bookmarks.has_next %}
+        <li>
+          <a href="?{{ bookmarks.next_page_number.querystring }}">
+            <span uk-pagination-next></span>
+          </a>
+        </li>
+        {% else %}
+        <li class="uk-disabled">
+          <a href="#">
+            <span uk-pagination-next></span>
+          </a>
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% comment %}
+<div>
+  <div class="container-fluid mt-2">
+    <div class="row">
+      <div class="col-3 d-none d-lg-block">
+        {% include 'accounts/includes/menu.html' %}
+      </div>
+      <div class="col-12 col-lg-9">
+        <div class="accounts-item-list">
+          {% for bookmark in bookmarks.object_list %}
+          <div>
+            <div class="item-h-card">
+              <a class="item-h-card-link" href="{{ bookmark.item.get_absolute_url }}">
+                <img src="{{ bookmark.item.image_set.all.0.file.url }}" class="item-h-card-img" />
+                <div class="item-h-card-content">
+                  <div class="">{{ bookmark.item.title }}</div>
+                  <div class="mt-1 text-black-50 small">
+                    <span>
+                      {{ bookmark.item.location.name }},
+                      {{ bookmark.item.location.state_code }}
+                    </span>
+                    <span class="px-1">·</span>
+                    <span>{{ bookmark.item.category.name }}</span>
+                  </div>
+                  <div>{{ bookmark.item.attributes.price }}</div>
+                </div>
+              </a>
+              <div class="item-h-card-action">
+                <a href="#" class="icon-btn">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" height="24" width="24" class="icon">
+                    <path d="M6.4 19 5 17.6 10.6 12 5 6.4 6.4 5 12 10.6 17.6 5 19 6.4 13.4 12 19 17.6 17.6 19 12 13.4Z" /></svg>
+                </a>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+
+          <ul class="pagination justify-content-center mt-4">
+            {% if bookmarks.has_previous %}
+            <li class="page-item">
+              <a href="?{{ bookmarks.previous_page_number.querystring }}" class="page-link">
+                <span>&laquo;</span></a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+              <a class="page-link">
+                <span>&laquo;</span>
+              </a>
+            </li>
+            {% endif %}
+            {% for page in bookmarks.pages %}
+            {% if page %}
+            {% ifequal page bookmarks.number %}
+            <li class="page-item active">
+              <a class="page-link">{{ page }}</a>
+
+              <span></span>
+            </li>
+            {% else %}
+            <li class="page-item">
+              <a href="?{{ page.querystring }}" class="page-link">{{ page }}</a>
+            </li>
+            {% endifequal %}
+            {% else %}...{% endif %}
+            {% endfor %}
+            {% if bookmarks.has_next %}
+            <li class="page-item">
+              <a href="?{{ bookmarks.next_page_number.querystring }}" class="page-link">
+                <span>&raquo;</span>
+              </a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+              <a class="page-link">
+                <span>&raquo;</span>
+              </a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endcomment %}
+{% endblock %}

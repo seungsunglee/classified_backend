@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+  <div>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-3">
+          {% include 'accounts/includes/menu.html' %}
+        </div>
+        <div class="col-9">
+          <div>
+            <div>
+              <div class="d-flex align-items-center justify-content-between mb-3">
+                <h1 class="h4">メッセージ</h1>
+              </div>
+              <div>
+                {% for participant in participants.object_list %}
+                  <a href="{% url 'accounts:direct_detail' participant.id %}" class="d-flex align-items-center py-2 px-3" style="min-height: 81px;">
+                    <div class="flex-shrink-0" style="min-width: 72px;">
+                      <img src="{{ participant.thread.item.image_set.all.0.file.url }}" class="rounded" style="width: 56px; height: 56px;">
+                    </div>
+                    <div class="flex-fill my-1" style="min-width: 0;">
+                      <div>{{ participant.opponent.username }}</div>
+                      <div>{{ participant.thread.item.title }}</div>
+                      <div>{{ participant.last_response.content }}</div>
+                    </div>
+                  </a>
+                {% endfor %}
+              </div>
+            </div>
+
+            <ul class="pagination justify-content-center">
+              {% if participants.has_previous %}
+                <li class="page-item">
+                  <a href="?{{ participants.previous_page_number.querystring }}" class="page-link">
+                    <span>&laquo;</span></a>
+                </li>
+              {% else %}
+                <li class="page-item disabled">
+                  <a class="page-link">
+                    <span>&laquo;</span>
+                  </a>
+                </li>
+              {% endif %}
+              {% for page in participants.pages %}
+                {% if page %}
+                  {% ifequal page participants.number %}
+                  <li class="page-item active">
+                    <a class="page-link">{{ page }}</a>
+
+                    <span></span>
+                  </li>
+                {% else %}
+                  <li class="page-item">
+                    <a href="?{{ page.querystring }}" class="page-link">{{ page }}</a>
+                  </li>
+                  {% endifequal %}
+                {% else %}...{% endif %}
+              {% endfor %}
+              {% if participants.has_next %}
+                <li class="page-item">
+                  <a href="?{{ participants.next_page_number.querystring }}" class="page-link">
+                    <span>&raquo;</span>
+                  </a>
+                </li>
+              {% else %}
+                <li class="page-item disabled">
+                  <a class="page-link">
+                    <span>&raquo;</span>
+                  </a>
+                </li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

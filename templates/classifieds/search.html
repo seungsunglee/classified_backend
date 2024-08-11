@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="uk-container">
+  <div uk-grid>
+    <div class="uk-width-1-3@m uk-visible@l">
+      <div class="uk-card uk-card-default uk-card-body">a</div>
+    </div>
+    <div class="uk-width-1-1@m uk-width-2-3@l">
+
+      {% for item in items.object_list %}
+      <a href="{{ item.get_absolute_url }}" class="uk-card uk-card-default uk-flex uk-margin uk-link-toggle">
+        <img src="{{ item.image_set.all.0.file.url }}" alt="" style="width: 200px; object-fit: cover;">
+        <div class="uk-padding-small uk-width-1-1">
+          <div class="uk-text-default"><span class="uk-link-heading">{{ item.title }}</span></div>
+          <div class="uk-text-meta">
+            <span>{{ item.location.name }}, {{ item.location.state_code }}</span>
+            <span>·</span>
+            <span>{{ item.category.name }}</span>
+          </div>
+        </div>
+      </a>
+      {% endfor %}
+
+      <ul class="uk-pagination uk-flex-center">
+        {% if items.has_previous %}
+        <li>
+          <a href="?{{ items.previous_page_number.querystring }}">
+            <span uk-pagination-previous></span>
+          </a>
+        </li>
+        {% else %}
+        <li class="uk-disabled">
+          <a href="#">
+            <span uk-pagination-previous></span>
+          </a>
+        </li>
+        {% endif %}
+        {% for page in items.pages %}
+        {% if page %}
+        {% ifequal page items.number %}
+        <li class="uk-active active">
+          <span>{{ page }}</span>
+        </li>
+        {% else %}
+        <li>
+          <a href="?{{ page.querystring }}">{{ page }}</a>
+        </li>
+        {% endifequal %}
+        {% else %}
+        <li class="uk-disabled"><span>...</span></li>
+        {% endif %}
+        {% endfor %}
+        {% if items.has_next %}
+        <li>
+          <a href="?{{ items.next_page_number.querystring }}">
+            <span uk-pagination-next></span>
+          </a>
+        </li>
+        {% else %}
+        <li class="uk-disabled">
+          <a href="#">
+            <span uk-pagination-next></span>
+          </a>
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</div>
+
+{% comment %}
+<div>
+  <div class="container-fluid mt-2">
+    <div class="row">
+      <div class="col-lg-3 d-none d-lg-block">
+        <div class="filter-header">
+          <div class="filter-header-title">絞り込み</div>
+        </div>
+      </div>
+      <div class="col-12 col-lg-9">
+        <div class="search-header">
+          <h1 class="search-header-title">検索結果</h1>
+        </div>
+        <div class="item-h-card-list">
+          {% for item in items.object_list %}
+          <div class="item-h-card">
+            <a class="item-h-card-link" href="{{ item.get_absolute_url }}">
+              <img src="{{ item.image_set.all.0.file.url }}" class="item-h-card-img" />
+              <div class="item-h-card-content">
+                <div class="">{{ item.title }}</div>
+                <div class="mt-1 text-black-50 small">
+                  <span>
+                    {{ item.location.name }},
+                    {{ item.location.state_code }}
+                  </span>
+                  <span class="px-1">·</span>
+                  <span>{{ item.category.name }}</span>
+                </div>
+                <div>{{ item.attributes.price }}</div>
+              </div>
+            </a>
+            <div class="item-h-card-action">
+              <a href="#" class="icon-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" height="24" width="24" class="icon">
+                  <path d="M12 21 10.55 19.7Q6.625 16.2 4.312 13.612Q2 11.025 2 8.15Q2 5.8 3.575 4.225Q5.15 2.65 7.5 2.65Q8.825 2.65 10 3.212Q11.175 3.775 12 4.75Q12.825 3.775 14 3.212Q15.175 2.65 16.5 2.65Q18.85 2.65 20.425 4.225Q22 5.8 22 8.15Q22 11.025 19.688 13.612Q17.375 16.2 13.45 19.7ZM12 11.475Q12 11.475 12 11.475Q12 11.475 12 11.475Q12 11.475 12 11.475Q12 11.475 12 11.475Q12 11.475 12 11.475Q12 11.475 12 11.475Q12 11.475 12 11.475Q12 11.475 12 11.475Q12 11.475 12 11.475Q12 11.475 12 11.475Q12 11.475 12 11.475Q12 11.475 12 11.475ZM12 18.3Q15.575 15.05 17.788 12.7Q20 10.35 20 8.15Q20 6.65 19 5.65Q18 4.65 16.5 4.65Q15.325 4.65 14.325 5.312Q13.325 5.975 12.95 7H11.05Q10.675 5.975 9.675 5.312Q8.675 4.65 7.5 4.65Q6 4.65 5 5.65Q4 6.65 4 8.15Q4 10.35 6.213 12.7Q8.425 15.05 12 18.3Z" />
+                </svg>
+              </a>
+            </div>
+          </div>
+          {% endfor %}
+
+          <ul class="pagination justify-content-center mt-4">
+            {% if items.has_previous %}
+            <li class="page-item">
+              <a href="?{{ items.previous_page_number.querystring }}" class="page-link">
+                <span>&laquo;</span></a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+              <a class="page-link">
+                <span>&laquo;</span>
+              </a>
+            </li>
+            {% endif %}
+            {% for page in items.pages %}
+            {% if page %}
+            {% ifequal page items.number %}
+            <li class="page-item active">
+              <a class="page-link">{{ page }}</a>
+
+              <span></span>
+            </li>
+            {% else %}
+            <li class="page-item">
+              <a href="?{{ page.querystring }}" class="page-link">{{ page }}</a>
+            </li>
+            {% endifequal %}
+            {% else %}...{% endif %}
+            {% endfor %}
+            {% if items.has_next %}
+            <li class="page-item">
+              <a href="?{{ items.next_page_number.querystring }}" class="page-link">
+                <span>&raquo;</span>
+              </a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+              <a class="page-link">
+                <span>&raquo;</span>
+              </a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endcomment %}
+{% endblock %}

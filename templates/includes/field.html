@@ -1,0 +1,29 @@
+{% load widget_tweaks %}
+<label class="uk-form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+<div class="uk-form-controls">
+  {% if field|widget_type  == 'textarea' %}
+  {{ field|add_class:"uk-textarea"|add_error_class:"uk-form-danger" }}
+  {% elif field|widget_type  == 'checkboxinput'%}
+  {{ field|add_class:"uk-checkbox"|add_error_class:"uk-form-danger" }}
+  {% elif field|widget_type  == 'select'%}
+  {{ field|add_class:"uk-select"|add_error_class:"uk-form-danger" }}
+  {% elif field|widget_type  == 'radioselect'%}
+  {{ field|add_class:"uk-radio"|add_error_class:"uk-form-danger" }}
+  {% else %}
+  {{ field|add_class:"uk-input"|add_error_class:"uk-form-danger" }}
+  {% endif %}
+  {% if field.help_text %}
+  <div class="uk-margin-small-top">
+    <span class="uk-text-small">
+      {{ field.help_text }}
+    </span>
+  </div>
+  {% endif %}
+  {% if field.errors %}
+  <div class="uk-margin-small-top">
+    {% for error in field.errors %}
+    <div class="uk-text-danger uk-text-small">{{ error | escape }}</div>
+    {% endfor %}
+  </div>
+  {% endif %}
+</div>

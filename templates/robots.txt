@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /account/
+Disallow: /promotion/
+Disallow: /admin/
+Disallow: /api/
+
+Sitemap: https://www.telopea.net/sitemap.xml

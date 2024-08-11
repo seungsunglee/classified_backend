@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="uk-container uk-flex uk-flex-center">
+  <div class="uk-width-1-1@s uk-width-large@m">
+    <h1 class="uk-text-large">カテゴリーを選択</h1>
+
+    <div class="uk-margin">
+      <select class="uk-select js_l1_categories">
+        <option value="" selected>選択してください</option>
+        {% for category in l1_categories %}
+        <option value="{{ category.id }}">{{ category.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="uk-margin js_l2_categories_container" style="display: none;">
+      <select class="uk-select js_l2_categories">
+        <option value="" selected>選択してください</option>
+        {% for category in l2_categories %}
+        <option value="{{ category.id }}" data-parent-id="{{ category.parent.id }}">{{ category.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block body_js %}
+<script>
+  $(function () {
+    $('.js_l1_categories').on('change', function () {
+      $('.js_l2_categories_container').show();
+      $('.js_l2_categories option').first().prop('selected', true);
+      $('.js_l2_categories option[value!=""]').hide();
+      $('.js_l2_categories option[data-parent-id="' + $(this).val() + '"]').show();
+    });
+
+    $('.js_l2_categories').on('change', function () {
+      if ($(this).val() !== '') {
+        window.location.href = '/classifieds/new/?category_id=' + $(this).val()
+      }
+
+    });
+  });
+</script>
+{% endblock %}

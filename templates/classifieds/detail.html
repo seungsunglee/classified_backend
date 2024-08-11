@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="uk-container">
+  <div uk-grid>
+    <div class="uk-width-1-1@s uk-width-2-3@m">
+      <div uk-grid>
+        <div class="uk-width-expand">
+          <h1 class="uk-text-large">{{ item.title }}</h1>
+        </div>
+        <div class="uk-width-auto">
+          <a href="" uk-icon="social"></a>
+          <a href="" uk-icon="heart"></a>
+        </div>
+      </div>
+      <div class="uk-text-meta">
+        {{ item.location.name }},
+        {{ item.location.state_code }}
+      </div>
+
+      <div class="uk-section">
+        <div class="uk-text-default">{{ item.description|linebreaksbr }}</div>
+      </div>
+    </div>
+    <div class="uk-width-1-3@s uk-visible@m">
+      <div class="uk-card uk-card-default">
+        <div class="uk-card-header">
+          <div class="uk-grid-small uk-flex-middle" uk-grid>
+            <div class="uk-width-auto">
+              <img class="uk-border-circle" width="40" height="40" src="{% static 'image/empty.png' %}">
+            </div>
+            <div class="uk-width-expand">
+              <div class="uk-text-default">{{ item.author.username }}</div>
+              <div class="uk-text-meta">4件の投稿</div>
+            </div>
+          </div>
+        </div>
+        <div class="uk-card-body">
+          <button class="uk-button uk-button-primary uk-width-1-1">メッセージを送信する</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% comment %}
+<div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12 col-md-8">
+        <div class="mb-3">
+          <div class="d-none d-md-block">
+            <div class="gallery" style="{% if item.image_set.count >= 2 %}grid-template-columns: repeat(2, 1fr);{% else %}grid-template-columns: repeat(1, 1fr);{% endif %}">
+              {% for image in item.image_set.all|slice:":3" %}
+              <div class="gallery-item" style="{% if forloop.counter > 1 and item.image_set.count > 2 %}height: 150px;{% else %}height: 310px;{% endif %} {% if forloop.first and item.image_set.count > 2 %}grid-column-end: span 1; grid-row-end: span 2;{% else %}grid-column-end: span 1; grid-row-end: span 1;{% endif %}">
+                <img class="gallery-img" src="{{ image.file.url }}" />
+
+                {% if forloop.counter == 3 and item.image_set.count > 3 %}
+                <button class="btn btn-sm btn-light gallery-see-more-btn shadow">
+                  <span class="me-2" style="margin-left: -2px;">
+                    <svg class="icon icon-xs" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" height="24" width="24">
+                      <path d="M6 17H18L14.25 12L11.25 16L9 13ZM5 21Q4.175 21 3.587 20.413Q3 19.825 3 19V5Q3 4.175 3.587 3.587Q4.175 3 5 3H19Q19.825 3 20.413 3.587Q21 4.175 21 5V19Q21 19.825 20.413 20.413Q19.825 21 19 21ZM5 19H19Q19 19 19 19Q19 19 19 19V5Q19 5 19 5Q19 5 19 5H5Q5 5 5 5Q5 5 5 5V19Q5 19 5 19Q5 19 5 19ZM5 5Q5 5 5 5Q5 5 5 5V19Q5 19 5 19Q5 19 5 19Q5 19 5 19Q5 19 5 19V5Q5 5 5 5Q5 5 5 5Z" /></svg>
+                  </span>
+                  もっと見る
+                </button>
+                {% endif %}
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-title-container">
+          <h1 class="h4 fw-bold">{{ item.title }}</h1>
+          <div class="position-absolute top-0 end-0 d-none d-md-block">
+            <a href="#" class="icon-btn shadow" style="margin-right: 12px;">
+              <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" height="24" width="24" class="icon icon-sm">
+                <path d="M18 22Q16.75 22 15.875 21.125Q15 20.25 15 19Q15 18.825 15.025 18.637Q15.05 18.45 15.1 18.3L8.05 14.2Q7.625 14.575 7.1 14.787Q6.575 15 6 15Q4.75 15 3.875 14.125Q3 13.25 3 12Q3 10.75 3.875 9.875Q4.75 9 6 9Q6.575 9 7.1 9.212Q7.625 9.425 8.05 9.8L15.1 5.7Q15.05 5.55 15.025 5.363Q15 5.175 15 5Q15 3.75 15.875 2.875Q16.75 2 18 2Q19.25 2 20.125 2.875Q21 3.75 21 5Q21 6.25 20.125 7.125Q19.25 8 18 8Q17.425 8 16.9 7.787Q16.375 7.575 15.95 7.2L8.9 11.3Q8.95 11.45 8.975 11.637Q9 11.825 9 12Q9 12.175 8.975 12.362Q8.95 12.55 8.9 12.7L15.95 16.8Q16.375 16.425 16.9 16.212Q17.425 16 18 16Q19.25 16 20.125 16.875Q21 17.75 21 19Q21 20.25 20.125 21.125Q19.25 22 18 22ZM18 6Q18.425 6 18.712 5.713Q19 5.425 19 5Q19 4.575 18.712 4.287Q18.425 4 18 4Q17.575 4 17.288 4.287Q17 4.575 17 5Q17 5.425 17.288 5.713Q17.575 6 18 6ZM6 13Q6.425 13 6.713 12.712Q7 12.425 7 12Q7 11.575 6.713 11.287Q6.425 11 6 11Q5.575 11 5.287 11.287Q5 11.575 5 12Q5 12.425 5.287 12.712Q5.575 13 6 13ZM18 20Q18.425 20 18.712 19.712Q19 19.425 19 19Q19 18.575 18.712 18.288Q18.425 18 18 18Q17.575 18 17.288 18.288Q17 18.575 17 19Q17 19.425 17.288 19.712Q17.575 20 18 20ZM18 5Q18 5 18 5Q18 5 18 5Q18 5 18 5Q18 5 18 5Q18 5 18 5Q18 5 18 5Q18 5 18 5Q18 5 18 5ZM6 12Q6 12 6 12Q6 12 6 12Q6 12 6 12Q6 12 6 12Q6 12 6 12Q6 12 6 12Q6 12 6 12Q6 12 6 12ZM18 19Q18 19 18 19Q18 19 18 19Q18 19 18 19Q18 19 18 19Q18 19 18 19Q18 19 18 19Q18 19 18 19Q18 19 18 19Z" /></svg>
+            </a>
+            <a href="" class="icon-btn shadow">
+              <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" height="24" width="24" class="icon icon-sm">
+                <path d="M12 21 10.55 19.7Q6.625 16.2 4.312 13.612Q2 11.025 2 8.15Q2 5.8 3.575 4.225Q5.15 2.65 7.5 2.65Q8.825 2.65 10 3.212Q11.175 3.775 12 4.75Q12.825 3.775 14 3.212Q15.175 2.65 16.5 2.65Q18.85 2.65 20.425 4.225Q22 5.8 22 8.15Q22 11.025 19.688 13.612Q17.375 16.2 13.45 19.7ZM12 11.475Q12 11.475 12 11.475Q12 11.475 12 11.475Q12 11.475 12 11.475Q12 11.475 12 11.475Q12 11.475 12 11.475Q12 11.475 12 11.475Q12 11.475 12 11.475Q12 11.475 12 11.475Q12 11.475 12 11.475Q12 11.475 12 11.475Q12 11.475 12 11.475Q12 11.475 12 11.475ZM12 18.3Q15.575 15.05 17.788 12.7Q20 10.35 20 8.15Q20 6.65 19 5.65Q18 4.65 16.5 4.65Q15.325 4.65 14.325 5.312Q13.325 5.975 12.95 7H11.05Q10.675 5.975 9.675 5.312Q8.675 4.65 7.5 4.65Q6 4.65 5 5.65Q4 6.65 4 8.15Q4 10.35 6.213 12.7Q8.425 15.05 12 18.3Z" />
+              </svg>
+            </a>
+          </div>
+        </div>
+        <div class="mt-2 text-black-50">
+          {{ item.location.name }},
+          {{ item.location.state_code }}
+        </div>
+        <div class="mt-1 fw-bold h4">$400</div>
+
+        <div class="">
+          <hr class="my-4">
+          <div class="">{{ item.description|linebreaksbr }}</div>
+        </div>
+
+        <div class="">
+          <hr class="my-4">
+          <div class="h5 fw-bold mb-3">関連する投稿</div>
+
+          <div class="row g-4">
+            {% for item in related_items %}
+            <div class="col-6 col-sm-3">
+              <a href="{{ item.get_absolute_url }}" class="item-v-card">
+                <div class="item-v-card-img" style="background-image: url({% if item.image_set.count > 0 %}{{ item.image_set.first.file.url }}{% else %}{% static 'image/empty.png' %}{% endif %});"></div>
+                <div class="pt-2">
+                  <div class="text-truncate-2">{{ item.title }}</div>
+                  <div class="small text-black-50 text-truncate">
+                    <span>{{ item.location.name }}, {{ item.location.state_code }}</span>
+                    <span class="px-1">·</span>
+                    <span>{{ item.category.name }}</span>
+                  </div>
+                  <div class="fw-bold" style="font-size: 1rem;">$370</div>
+                </div>
+              </a>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4 d-none d-md-block">
+        <div class="position-sticky w-100">
+          <div class="border shadow rounded">
+            <a href="" class="d-flex align-items-center p-3">
+              <div class="flex-shrink-0 d-inline-flex" style="min-width: 64px;">
+                <div class="avatar avatar-lg">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" height="24" width="24" class="icon">
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path>
+                  </svg>
+                </div>
+              </div>
+              <div class="overflow-hidden flex-fill">
+                <span class="d-block fw-bold text-trancate" style="font-size: 1rem;">{{ item.author.username }}</span>
+                <span class="d-block text-black-50 text-trancate">4件の投稿</span>
+              </div>
+              <div class="align-self-center text-black-50">
+                <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" height="24" width="24" class="icon">
+                  <path d="M8.025 22 6.25 20.225 14.475 12 6.25 3.775 8.025 2 18.025 12Z" /></svg>
+              </div>
+            </a>
+            <div class="p-3 pb-4 d-grid">
+              <button class="btn btn-primary btn-lg" style="font-size: 1rem;">メッセージを送信する</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endcomment %}
+{% endblock %}

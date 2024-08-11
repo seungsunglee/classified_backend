@@ -1,0 +1,10 @@
+{% extends 'email/base_message.txt' %}
+
+{% block content %}{% autoescape off %}以下の投稿にお問い合わせがありました。
+{{ item.title }}
+{{ protocol }}://{{ domain }}/classifieds/p/{{ item.id }}
+
+以下のリンクをクリックして内容をご確認の上、ご返信ください。
+{{ protocol }}://{{ domain }}/account/direct/{{ participant.id }}/
+
+{% endautoescape %}{% endblock %}

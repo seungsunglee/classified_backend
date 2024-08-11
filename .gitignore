@@ -1,0 +1,11 @@
+*.pyc
+*~
+__pycache__
+.idea
+.DS_Store
+media
+static
+.env
+local_settings.py
+.vscode
+dump.rdb

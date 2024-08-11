@@ -1,0 +1,8 @@
+{% autoescape off %}{{ user.username }} 様
+
+Telopeaをご利用いただきありがとうございます。
+
+{% block content %}{% endblock %}
+
+Telopea {{ protocol }}://{{ domain }}
+{% endautoescape %}
